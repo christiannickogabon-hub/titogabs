@@ -356,7 +356,7 @@ class IncidentBulkUpdateViewSet(viewsets.ModelViewSet):
 # ===================== DASHBOARD VIEWS (Template-based) =====================
 
 @login_required
-@role_required(['admin', 'dispatcher'])
+@role_required(['admin', 'dispatcher', 'viewer'])
 def dashboard(request):
     """
     Main dashboard with advanced filtering and inline formsets.
@@ -367,10 +367,12 @@ def dashboard(request):
     # Get incidents based on role (Anti-IDOR)
     if user.role == 'admin':
         incidents = Incident.objects.all()
-    else:
+    elif user.role == 'dispatcher':
         incidents = Incident.objects.filter(
             Q(reported_by=user) | Q(assigned_to=user)
         )
+    else:
+        incidents = Incident.objects.filter(status='confirmed')
     
     # Apply filters
     if filter_form.is_valid():

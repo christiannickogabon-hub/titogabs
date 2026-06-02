@@ -79,13 +79,16 @@
             <!-- Action Buttons -->
             <div class="card mb-3">
                 <div class="card-body">
+                    {% if user.role == 'admin' or user.role == 'dispatcher' %}
                     <a href="{% url 'incident_update' incident.pk %}" class="btn btn-warning btn-block">Edit Incident</a>
+                    {% endif %}
                     <a href="{% url 'dashboard' %}" class="btn btn-secondary btn-block mt-2">Back to Dashboard</a>
                 </div>
             </div>
         </div>
     </div>
 
+    {% if user.role == 'admin' or user.role == 'dispatcher' %}
     <!-- Audit Log -->
     <div class="row mt-4">
         <div class="col-md-12">
@@ -118,5 +121,6 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
