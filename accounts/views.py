@@ -9,12 +9,20 @@ from axes.handlers.proxy import AxesProxyHandler
 from axes.models import AccessAttempt
 from .forms import UserCreationForm, UserChangeForm, PublicRegistrationForm
 from .decorators import admin_required
+from .demo import ensure_demo_accounts
 
 User = get_user_model()
+demo_accounts_checked = False
 
 
 class CustomLoginView(auth_views.LoginView):
     template_name = 'accounts/login.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        global demo_accounts_checked
+        if not demo_accounts_checked:
+            demo_accounts_checked = ensure_demo_accounts()
+        return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
