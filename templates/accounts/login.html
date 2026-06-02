@@ -20,6 +20,12 @@
                     </div>
                     {% endif %}
 
+                    {% if axes_locked_message %}
+                    <div class="alert alert-warning">
+                        {{ axes_locked_message }}
+                    </div>
+                    {% endif %}
+
                     <form method="post">
                         {% csrf_token %}
                         <div class="form-group">
@@ -45,9 +51,10 @@
 
                     <hr>
 
-                    <p class="text-center text-muted">
+                    <div class="d-flex justify-content-between">
                         <a href="{% url 'password_reset' %}">Forgot password?</a>
-                    </p>
+                        <a href="{% url 'register' %}">Create an account</a>
+                    </div>
                 </div>
             </div>
 
