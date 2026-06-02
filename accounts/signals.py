@@ -18,10 +18,11 @@ def log_user_creation_or_update(sender, instance, created, **kwargs):
 
 
 @receiver(user_locked_out)
-def log_lockout(sender, request, credentials, **kwargs):
+def log_lockout(sender, request, **kwargs):
     """Log lockout attempts for security monitoring"""
+    credentials = kwargs.get('credentials', {}) or {}
     username = credentials.get('username', 'unknown')
-    ip_address = get_client_ip(request) if request else 'unknown'
+    ip_address = kwargs.get('ip_address') or get_client_ip(request) if request else 'unknown'
     logger.warning(f'User lockout attempt for {username} from IP {ip_address}')
 
 
