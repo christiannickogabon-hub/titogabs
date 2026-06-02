@@ -21,6 +21,40 @@ from .forms import IncidentForm, HazardImageFormSet, IncidentFilterForm
 from accounts.decorators import role_required
 
 
+def get_incident_alert_level(priority):
+    """Map incident priority to dashboard alert levels."""
+    if priority >= 5:
+        return 'red'
+    if priority >= 4:
+        return 'orange'
+    if priority >= 2:
+        return 'yellow'
+    return 'green'
+
+
+def build_hazard_summary(incidents):
+    """
+    Summarize visible unresolved incidents by alert level.
+    Linked hazards provide the level; otherwise incident priority is used.
+    """
+    summary = {
+        'red': 0,
+        'orange': 0,
+        'yellow': 0,
+        'green': 0,
+    }
+
+    for incident in incidents.exclude(status='resolved').prefetch_related('related_hazards'):
+        related_hazards = list(incident.related_hazards.all())
+        if related_hazards:
+            for hazard in related_hazards:
+                summary[hazard.alert_level] += 1
+        else:
+            summary[get_incident_alert_level(incident.priority)] += 1
+
+    return summary
+
+
 # ===================== RBAC PERMISSION CLASSES =====================
 
 class IsAdminOrReadOnly(IsAuthenticated):
@@ -416,14 +450,8 @@ def dashboard(request):
         'high_priority': incidents.filter(priority__gte=4).count(),
     }
     
-    # Get hazard status summary
-    hazards = Hazard.objects.all()
-    hazard_summary = {
-        'red': hazards.filter(alert_level='red').count(),
-        'orange': hazards.filter(alert_level='orange').count(),
-        'yellow': hazards.filter(alert_level='yellow').count(),
-        'green': hazards.filter(alert_level='green').count(),
-    }
+    # Get alert status summary from visible unresolved incidents.
+    hazard_summary = build_hazard_summary(incidents)
     
     context = {
         'incidents': incidents[:50],  # Paginate by showing latest 50
