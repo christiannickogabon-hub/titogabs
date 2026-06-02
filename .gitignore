@@ -80,3 +80,7 @@ tmp*/
 
 # Cloudinary local cache and storage
 *.cache
+inspect_axes_attempts2.py
+inspect_axes_handlers.py
+inspect_axes_handlers2.py
+tmp_login_test.py
