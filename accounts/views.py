@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.urls import reverse_lazy
-from axes.handlers import AxesProxyHandler
+from axes.handlers.proxy import AxesProxyHandler
 from axes.models import AccessAttempt
 from .forms import UserCreationForm, UserChangeForm, PublicRegistrationForm
 from .decorators import admin_required
