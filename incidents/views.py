@@ -31,7 +31,7 @@ class IsAdminOrReadOnly(IsAuthenticated):
             return False
         if request.method in ['GET', 'HEAD', 'OPTIONS']:
             return True
-        return request.user.role == 'admin'
+        return request.user.is_superuser or request.user.role == 'admin'
 
 
 class IsDispatcherOrAdmin(IsAuthenticated):
@@ -40,7 +40,7 @@ class IsDispatcherOrAdmin(IsAuthenticated):
         is_auth = super().has_permission(request, view)
         if not is_auth:
             return False
-        return request.user.role in ['admin', 'dispatcher']
+        return request.user.is_superuser or request.user.role in ['admin', 'dispatcher']
 
 
 class IsAdmin(IsAuthenticated):
@@ -49,7 +49,7 @@ class IsAdmin(IsAuthenticated):
         is_auth = super().has_permission(request, view)
         if not is_auth:
             return False
-        return request.user.role == 'admin'
+        return request.user.is_superuser or request.user.role == 'admin'
 
 
 # ===================== API VIEWSETS =====================
@@ -111,7 +111,7 @@ class IncidentViewSet(viewsets.ModelViewSet):
 
         user = self.request.user
         
-        if user.role == 'admin':
+        if user.is_superuser or user.role == 'admin':
             # Admins see all incidents
             return Incident.objects.all()
         elif user.role == 'dispatcher':
@@ -139,7 +139,7 @@ class IncidentViewSet(viewsets.ModelViewSet):
     def assign(self, request, pk=None):
         """Assign incident to a dispatcher"""
         incident = self.get_object()
-        if request.user.role != 'admin':
+        if not request.user.is_superuser and request.user.role != 'admin':
             return Response(
                 {'error': 'Only admins can assign incidents'},
                 status=status.HTTP_403_FORBIDDEN
@@ -217,7 +217,7 @@ class IncidentViewSet(viewsets.ModelViewSet):
     
     def _has_incident_access(self, incident, user):
         """Anti-IDOR: Check if user has access to incident"""
-        if user.role == 'admin':
+        if user.is_superuser or user.role == 'admin':
             return True
         if user.role == 'dispatcher':
             return incident.reported_by == user or incident.assigned_to == user
@@ -365,7 +365,7 @@ def dashboard(request):
     filter_form = IncidentFilterForm(request.GET or None)
     
     # Get incidents based on role (Anti-IDOR)
-    if user.role == 'admin':
+    if user.is_superuser or user.role == 'admin':
         incidents = Incident.objects.all()
     elif user.role == 'dispatcher':
         incidents = Incident.objects.filter(
@@ -484,7 +484,7 @@ def incident_update(request, pk):
     incident = get_object_or_404(Incident, pk=pk)
     
     # Anti-IDOR: Check access
-    if request.user.role != 'admin':
+    if not request.user.is_superuser and request.user.role != 'admin':
         if incident.reported_by != request.user and incident.assigned_to != request.user:
             return redirect('access_denied')
     

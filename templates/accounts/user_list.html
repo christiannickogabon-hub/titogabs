@@ -9,6 +9,7 @@
     
     <div class="mb-3">
         <a href="{% url 'user_create' %}" class="btn btn-primary">+ Add New User</a>
+        <a href="{% url 'account_activity' %}" class="btn btn-outline-secondary">View Account Activity</a>
     </div>
 
     <div class="card">
@@ -22,6 +23,7 @@
                         <th>Role</th>
                         <th>Status</th>
                         <th>Created</th>
+                        <th>Last Login</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -40,6 +42,7 @@
                             {% endif %}
                         </td>
                         <td>{{ user.date_joined|date:"M d, Y" }}</td>
+                        <td>{{ user.last_login|date:"M d, Y H:i"|default:"Never" }}</td>
                         <td>
                             <a href="{% url 'user_update' user.pk %}" class="btn btn-sm btn-warning">Edit</a>
                         </td>

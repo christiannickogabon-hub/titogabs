@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from .models import User
+from .models import AccountActivity, User
 
 
 @admin.register(User)
@@ -51,3 +51,12 @@ class UserAdmin(BaseUserAdmin):
             role_labels.get(obj.role, obj.role)
         )
     role_badge.short_description = 'Role'
+
+
+@admin.register(AccountActivity)
+class AccountActivityAdmin(admin.ModelAdmin):
+    list_display = ('user', 'action', 'timestamp', 'ip_address')
+    list_filter = ('action', 'timestamp')
+    search_fields = ('user__username', 'user__email', 'ip_address', 'user_agent')
+    readonly_fields = ('user', 'action', 'timestamp', 'ip_address', 'user_agent')
+    ordering = ('-timestamp',)

@@ -9,12 +9,21 @@ logger = logging.getLogger(__name__)
 DEMO_PASSWORD = 'password123'
 DEMO_USERS = [
     {
+        'username': 'superadmin',
+        'email': 'superadmin@alertgov.local',
+        'role': 'admin',
+        'first_name': 'Super',
+        'last_name': 'Admin',
+        'is_superuser': True,
+        'is_staff': True,
+    },
+    {
         'username': 'admin',
         'email': 'admin@alertgov.local',
         'role': 'admin',
         'first_name': 'Admin',
         'last_name': 'User',
-        'is_superuser': True,
+        'is_superuser': False,
         'is_staff': True,
     },
     {

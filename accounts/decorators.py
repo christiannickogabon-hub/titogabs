@@ -14,6 +14,9 @@ def role_required(allowed_roles):
             if not request.user.is_authenticated:
                 return redirect('login')
             
+            if request.user.is_superuser:
+                return view_func(request, *args, **kwargs)
+
             if request.user.role not in allowed_roles:
                 return HttpResponseForbidden('You do not have permission to access this resource.')
             
@@ -29,7 +32,7 @@ def admin_required(view_func):
         if not request.user.is_authenticated:
             return redirect('login')
         
-        if request.user.role != 'admin':
+        if not request.user.is_superuser and request.user.role != 'admin':
             return HttpResponseForbidden('Only administrators can access this resource.')
         
         return view_func(request, *args, **kwargs)
@@ -43,6 +46,9 @@ def dispatcher_or_admin_required(view_func):
         if not request.user.is_authenticated:
             return redirect('login')
         
+        if request.user.is_superuser:
+            return view_func(request, *args, **kwargs)
+
         if request.user.role not in ['admin', 'dispatcher']:
             return HttpResponseForbidden('Only dispatchers and administrators can access this resource.')
         

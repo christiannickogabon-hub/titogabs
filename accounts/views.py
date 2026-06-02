@@ -4,12 +4,14 @@ from django.contrib.auth import logout
 from django.contrib.auth import views as auth_views
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from axes.handlers.proxy import AxesProxyHandler
 from axes.models import AccessAttempt
 from .forms import UserCreationForm, UserChangeForm, PublicRegistrationForm
 from .decorators import admin_required
 from .demo import ensure_demo_accounts
+from .models import AccountActivity
 
 User = get_user_model()
 demo_accounts_checked = False
@@ -124,11 +126,24 @@ def logout_view(request):
 @admin_required
 def user_list(request):
     """List all users (Admin only)"""
-    users = User.objects.all()
+    users = User.objects.prefetch_related('activities').all()
     context = {
         'users': users,
     }
     return render(request, 'accounts/user_list.html', context)
+
+
+@login_required
+@admin_required
+def account_activity(request):
+    """Show login/logout activity for all accounts."""
+    activities = AccountActivity.objects.select_related('user').all()
+    paginator = Paginator(activities, 50)
+    page_obj = paginator.get_page(request.GET.get('page'))
+
+    return render(request, 'accounts/account_activity.html', {
+        'page_obj': page_obj,
+    })
 
 
 @login_required

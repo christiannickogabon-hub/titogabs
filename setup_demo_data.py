@@ -11,11 +11,11 @@ from django.contrib.auth import get_user_model
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'alertgov.settings')
 django.setup()
 
+from accounts.demo import DEMO_PASSWORD, DEMO_USERS
 from axes.models import AccessAttempt
 from incidents.models import Hazard, Incident, Sensor
 
 User = get_user_model()
-DEMO_PASSWORD = 'password123'
 
 
 def clear_login_lockouts():
@@ -30,37 +30,7 @@ def create_demo_users():
     print("Creating demo users...")
     clear_login_lockouts()
 
-    demo_users = [
-        {
-            'username': 'admin',
-            'email': 'admin@alertgov.local',
-            'role': 'admin',
-            'first_name': 'Admin',
-            'last_name': 'User',
-            'is_superuser': True,
-            'is_staff': True,
-        },
-        {
-            'username': 'dispatcher',
-            'email': 'dispatcher@alertgov.local',
-            'role': 'dispatcher',
-            'first_name': 'Dispatcher',
-            'last_name': 'Officer',
-            'is_superuser': False,
-            'is_staff': False,
-        },
-        {
-            'username': 'viewer',
-            'email': 'viewer@alertgov.local',
-            'role': 'viewer',
-            'first_name': 'Public',
-            'last_name': 'Viewer',
-            'is_superuser': False,
-            'is_staff': False,
-        },
-    ]
-
-    for user_data in demo_users:
+    for user_data in DEMO_USERS:
         username = user_data['username']
         try:
             user = User.objects.filter(username=username).first()
@@ -221,6 +191,7 @@ create_demo_incidents()
 
 print("\nOK Demo data setup complete!")
 print("\nDemo Credentials:")
+print("  Superuser: superadmin / password123")
 print("  Admin User: admin / password123")
 print("  Dispatcher: dispatcher / password123")
 print("  Public Viewer: viewer / password123")

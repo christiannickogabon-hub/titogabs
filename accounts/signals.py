@@ -1,8 +1,11 @@
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 from axes.signals import user_locked_out
 import logging
+
+from .models import AccountActivity
 
 User = get_user_model()
 logger = logging.getLogger(__name__)
@@ -24,6 +27,31 @@ def log_lockout(sender, request, **kwargs):
     username = credentials.get('username', 'unknown')
     ip_address = kwargs.get('ip_address') or get_client_ip(request) if request else 'unknown'
     logger.warning(f'User lockout attempt for {username} from IP {ip_address}')
+
+
+@receiver(user_logged_in)
+def log_user_login(sender, request, user, **kwargs):
+    """Record successful account usage."""
+    AccountActivity.objects.create(
+        user=user,
+        action=AccountActivity.ACTION_LOGIN,
+        ip_address=get_client_ip(request),
+        user_agent=request.META.get('HTTP_USER_AGENT', '') if request else '',
+    )
+
+
+@receiver(user_logged_out)
+def log_user_logout(sender, request, user, **kwargs):
+    """Record logout activity when a user ends their session."""
+    if user is None:
+        return
+
+    AccountActivity.objects.create(
+        user=user,
+        action=AccountActivity.ACTION_LOGOUT,
+        ip_address=get_client_ip(request),
+        user_agent=request.META.get('HTTP_USER_AGENT', '') if request else '',
+    )
 
 
 def get_client_ip(request):
