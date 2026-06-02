@@ -9,7 +9,7 @@ services:
     runtime: python
     plan: free
     buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
-    startCommand: "gunicorn alertgov.wsgi:application"
+    startCommand: "python manage.py migrate --noinput && python setup_demo_data.py && gunicorn alertgov.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.5
