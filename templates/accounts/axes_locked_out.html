@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Account Locked - Santa Fe, Leyte AlertGov{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0"><i class="fas fa-lock"></i> Account Locked</h3>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Your account has been temporarily locked because of too many failed login attempts.</p>
+                    <p>Please try one of the following:</p>
+                    <ul>
+                        <li>Use the <strong>Forgot password?</strong> link to reset your password and unlock your account immediately.</li>
+                        <li>Wait <strong>30 minutes</strong> and try logging in again.</li>
+                    </ul>
+                    <p class="text-muted">If you still cannot access your account after trying these steps, contact an administrator for help.</p>
+                    <div class="mt-4 d-flex flex-column flex-sm-row gap-2">
+                        <a href="{% url 'login' %}" class="btn btn-primary">Back to Login</a>
+                        <a href="{% url 'password_reset' %}" class="btn btn-outline-secondary">Reset Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

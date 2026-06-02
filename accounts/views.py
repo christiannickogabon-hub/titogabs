@@ -80,6 +80,11 @@ def register(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 
+def locked_out(request):
+    """Render a friendly account lockout page for locked users."""
+    return render(request, 'accounts/axes_locked_out.html')
+
+
 def home(request):
     """Home page - redirect to dashboard if authenticated"""
     if request.user.is_authenticated:

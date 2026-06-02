@@ -17,47 +17,56 @@ User = get_user_model()
 # Create demo users
 print("Creating demo users...")
 
-try:
-    admin_user = User.objects.create_superuser(
-        username='admin',
-        email='admin@alertgov.local',
-        password='password123',
-        role='admin'
-    )
-    admin_user.first_name = 'Admin'
-    admin_user.last_name = 'User'
-    admin_user.save()
-    print("✓ Admin user created: admin/password123")
-except:
-    print("Admin user already exists")
+DEMO_PASSWORD = 'password123'
 
-try:
-    dispatcher_user = User.objects.create_user(
-        username='dispatcher',
-        email='dispatcher@alertgov.local',
-        password='password123',
-        role='dispatcher'
-    )
-    dispatcher_user.first_name = 'Dispatcher'
-    dispatcher_user.last_name = 'Officer'
-    dispatcher_user.save()
-    print("✓ Dispatcher user created: dispatcher/password123")
-except:
-    print("Dispatcher user already exists")
+admin_data = {
+    'username': 'admin',
+    'email': 'admin@alertgov.local',
+    'role': 'admin',
+    'first_name': 'Admin',
+    'last_name': 'User',
+}
 
-try:
-    viewer_user = User.objects.create_user(
-        username='viewer',
-        email='viewer@alertgov.local',
-        password='password123',
-        role='viewer'
-    )
-    viewer_user.first_name = 'Public'
-    viewer_user.last_name = 'Viewer'
-    viewer_user.save()
-    print("✓ Public viewer user created: viewer/password123")
-except:
-    print("Public viewer user already exists")
+for user_data, create_super in [ (admin_data, True),
+                               ({'username': 'dispatcher', 'email': 'dispatcher@alertgov.local', 'role': 'dispatcher', 'first_name': 'Dispatcher', 'last_name': 'Officer'}, False),
+                               ({'username': 'viewer', 'email': 'viewer@alertgov.local', 'role': 'viewer', 'first_name': 'Public', 'last_name': 'Viewer'}, False), ]:
+    username = user_data['username']
+    try:
+        user = User.objects.filter(username=username).first()
+        if not user:
+            if create_super:
+                user = User.objects.create_superuser(
+                    username=username,
+                    email=user_data['email'],
+                    password=DEMO_PASSWORD,
+                    role=user_data['role'],
+                )
+            else:
+                user = User.objects.create_user(
+                    username=username,
+                    email=user_data['email'],
+                    password=DEMO_PASSWORD,
+                    role=user_data['role'],
+                )
+            user.first_name = user_data['first_name']
+            user.last_name = user_data['last_name']
+            user.save()
+            print(f"✓ {username.capitalize()} user created: {username}/{DEMO_PASSWORD}")
+        else:
+            user.email = user_data['email']
+            user.role = user_data['role']
+            user.first_name = user_data['first_name']
+            user.last_name = user_data['last_name']
+            user.set_password(DEMO_PASSWORD)
+            if create_super:
+                user.is_superuser = True
+                user.is_staff = True
+            user.save()
+            print(f"✓ {username.capitalize()} user already existed; password reset to {DEMO_PASSWORD}")
+    except Exception as e:
+        print(f"Error creating or updating {username}: {e}")
+
+print("\nDemo user passwords are now set to 'password123'.")
 
 # Create demo sensors
 print("\nCreating demo sensors...")

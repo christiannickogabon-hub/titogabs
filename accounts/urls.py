@@ -8,6 +8,7 @@ urlpatterns = [
     
     # Authentication
     path('login/', views.CustomLoginView.as_view(), name='login'),
+    path('login/locked/', views.locked_out, name='login_locked'),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register, name='register'),
     path('password_change/', auth_views.PasswordChangeView.as_view(template_name='accounts/password_change_form.html'), name='password_change'),
