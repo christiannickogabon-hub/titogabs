@@ -268,6 +268,8 @@ AXES_LOCK_OUT_AT_FAILURE = True
 AXES_VERBOSE = True
 AXES_LOCKOUT_URL = '/login/locked/'
 AXES_LOCKOUT_TEMPLATE = 'accounts/axes_locked_out.html'
+AXES_LOCKOUT_PARAMETERS = ['username', 'ip_address']
+AXES_RESET_ON_SUCCESS = True
 
 # ===================== CORS CONFIGURATION =====================
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:3000,http://127.0.0.1:3000').split(',')
