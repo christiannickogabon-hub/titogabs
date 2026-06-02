@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'alertgov.settings')
 django.setup()
 
+from axes.models import AccessAttempt
 from incidents.models import Sensor, Hazard, Incident
 
 User = get_user_model()
@@ -63,6 +64,12 @@ for user_data, create_super in [ (admin_data, True),
                 user.is_staff = True
             user.save()
             print(f"✓ {username.capitalize()} user already existed; password reset to {DEMO_PASSWORD}")
+
+        try:
+            AccessAttempt.objects.filter(username__iexact=username).delete()
+            print(f"✓ Cleared lockout records for {username}")
+        except Exception:
+            pass
     except Exception as e:
         print(f"Error creating or updating {username}: {e}")
 
