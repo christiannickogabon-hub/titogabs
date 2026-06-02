@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Profile - Santa Fe, Leyte AlertGov{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{ user.get_full_name|default:user.username }}'s Profile</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Role:</strong> <span class="badge badge-info">{{ user.get_role_display }}</span></p>
+                    <p><strong>Phone:</strong> {{ user.phone|default:"Not set" }}</p>
+                    <p><strong>Member Since:</strong> {{ user.date_joined|date:"F d, Y" }}</p>
+                    <p><strong>Last Login:</strong> {{ user.last_login|date:"F d, Y H:i"|default:"Never" }}</p>
+
+                    <div class="mt-4">
+                        <a href="{% url 'password_change' %}" class="btn btn-warning">Change Password</a>
+                        {% if user.is_staff %}
+                        <a href="/admin/" class="btn btn-danger">Admin Panel</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

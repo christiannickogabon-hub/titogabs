@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Welcome - Santa Fe, Leyte AlertGov{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <h1 class="display-4">
+                    <i class="fas fa-bell text-danger"></i> Santa Fe, Leyte AlertGov
+                </h1>
+                <p class="lead">The Municipality of Santa Fe, Leyte Disaster Early Warning System</p>
+                <hr class="my-4">
+                <p>A comprehensive solution for the Municipality of Santa Fe, Leyte to monitor hazard sensors, log incident reports, and broadcast early warnings to protect communities.</p>
+                
+                <div class="row mt-5">
+                    <div class="col-md-4 text-center">
+                        <i class="fas fa-sensor fa-3x text-primary mb-3"></i>
+                        <h5>Real-Time Monitoring</h5>
+                        <p class="text-muted">Track earthquake, flood, landslide, and typhoon sensors in real-time</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+                        <h5>Incident Reporting</h5>
+                        <p class="text-muted">Dispatchers report and track localized incidents with image documentation</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <i class="fas fa-megaphone fa-3x text-danger mb-3"></i>
+                        <h5>Early Warnings</h5>
+                        <p class="text-muted">Admins bulk-update hazard statuses to broadcast early warnings</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if user.is_authenticated %}
+            <div class="alert alert-info" role="alert">
+                <i class="fas fa-user-check"></i> Welcome back, <strong>{{ user.first_name }} {{ user.last_name }}</strong>!
+                <a href="{% url 'dashboard' %}" class="btn btn-sm btn-primary ml-3">Go to Dashboard</a>
+            </div>
+            {% else %}
+            <div class="text-center mt-5">
+                <p class="lead">Get started by logging in to your account</p>
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- Features Section -->
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h3 class="mb-4">Key Features</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-lock text-success"></i> Advanced Security</h5>
+                            <p class="card-text">
+                                <strong>Role-Based Access Control:</strong> Strict RBAC for Santa Fe Admin, Dispatcher, and Public Viewer roles
+                            </p>
+                            <p class="card-text">
+                                <strong>Brute-Force Protection:</strong> Django-Axes active defense against login attacks
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-eye-slash text-info"></i> Privacy & Masking</h5>
+                            <p class="card-text">
+                                <strong>Field-Level Masking:</strong> Precise coordinates and contact info hidden from public users
+                            </p>
+                            <p class="card-text">
+                                <strong>Anti-IDOR Protection:</strong> Users only access incidents they reported or are assigned to
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-bars text-warning"></i> Inline Formsets</h5>
+                            <p class="card-text">
+                                <strong>Incident Logging:</strong> Primary incident + multiple hazard images in one form
+                            </p>
+                            <p class="card-text">
+                                <strong>Advanced Filtering:</strong> Dashboard with date, status, and priority filtering
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-api text-danger"></i> RESTful API</h5>
+                            <p class="card-text">
+                                <strong>JWT Authentication:</strong> Secure token-based API access for mobile apps
+                            </p>
+                            <p class="card-text">
+                                <strong>API Documentation:</strong> Full Swagger/OpenAPI documentation available
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer CTA -->
+            <div class="alert alert-success mt-5" role="alert">
+                <h4 class="alert-heading">Ready to Deploy?</h4>
+                <p>Santa Fe, Leyte AlertGov is production-ready and compatible with Render or Railway deployment platforms.</p>
+                <hr>
+                <p class="mb-0">
+                    <strong>API Documentation:</strong> 
+                    <a href="{% url 'swagger-ui' %}" class="alert-link">View Swagger UI</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

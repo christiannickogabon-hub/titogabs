@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Incident - Santa Fe, Leyte AlertGov{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h4>{% if incident %}Update Incident{% else %}Report New Incident{% endif %}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Primary Incident Form -->
+                        <h5 class="mb-3">Incident Details</h5>
+                        {{ form.as_p }}
+
+                        <!-- Hazard Images Formset (Inline) -->
+                        <h5 class="mb-3 mt-4">Attach Hazard Images</h5>
+                        <div id="formset-container">
+                            {{ formset.management_form }}
+                            {% for form in formset %}
+                            <div class="formset-row card p-3 mb-2">
+                                {% if forloop.first %}<p class="text-muted">You can attach multiple images for documentation</p>{% endif %}
+                                {{ form.as_p }}
+                                {% if form.non_form_errors %}
+                                    <div class="alert alert-danger">{{ form.non_form_errors }}</div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                {% if incident %}Update Incident{% else %}Create Incident{% endif %}
+                            </button>
+                            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Handle formset add/remove functionality (optional)
+document.querySelectorAll('.DELETE input').forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            this.closest('.formset-row').style.opacity = '0.5';
+        } else {
+            this.closest('.formset-row').style.opacity = '1';
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,643 @@
+{
+  "info": {
+    "name": "AlertGov API Collection",
+    "description": "Complete REST API endpoints for Local Government Disaster Early Warning System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Obtain Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"dispatcher\",\n  \"password\": \"DispatcherPass123!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", ""]
+            },
+            "description": "Obtain JWT access and refresh tokens"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"username\": \"dispatcher\", \"password\": \"DispatcherPass123!\"}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/token/",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "token", ""]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"access\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "token", "refresh", ""]
+            },
+            "description": "Refresh JWT access token using refresh token"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sensors",
+      "item": [
+        {
+          "name": "List All Sensors",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/sensors/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sensors", ""]
+            },
+            "description": "Get all sensors with masking applied based on user role"
+          }
+        },
+        {
+          "name": "Get Sensor Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/sensors/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sensors", "1", ""]
+            },
+            "description": "Get specific sensor (coordinates masked for viewers)"
+          }
+        },
+        {
+          "name": "Create Sensor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Santa Fe Rain Gauge\",\n  \"sensor_type\": \"Rain Gauge\",\n  \"latitude\": 11.1904,\n  \"longitude\": 124.9202,\n  \"location_description\": \"Barangay Hall, Poblacion, Santa Fe, Leyte\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sensors/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sensors", ""]
+            },
+            "description": "Create new sensor (Admin only)"
+          }
+        },
+        {
+          "name": "Update Sensor",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sensor_type\": \"Seismic Sensor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sensors/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sensors", "1", ""]
+            },
+            "description": "Update sensor (Admin only)"
+          }
+        },
+        {
+          "name": "Delete Sensor",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/sensors/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "sensors", "1", ""]
+            },
+            "description": "Delete sensor (Admin only)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hazards",
+      "item": [
+        {
+          "name": "List All Hazards",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/hazards/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "hazards", ""]
+            },
+            "description": "Get all hazards with filtering support"
+          }
+        },
+        {
+          "name": "Get Hazard Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/hazards/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "hazards", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Hazard",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hazard_type\": \"Heavy Rain\",\n  \"sensor\": 1,\n  \"current_alert_level\": \"Yellow\",\n  \"description\": \"Heavy rainfall detected exceeding 50mm\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/hazards/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "hazards", ""]
+            },
+            "description": "Create new hazard (Admin/Dispatcher)"
+          }
+        },
+        {
+          "name": "Update Hazard Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"current_alert_level\": \"Red\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/hazards/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "hazards", "1", ""]
+            },
+            "description": "Update hazard alert level (Dispatcher/Admin)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Incidents",
+      "item": [
+        {
+          "name": "List All Incidents",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/incidents/?status=confirmed&priority=High",
+              "host": ["{{base_url}}"],
+              "path": ["api", "incidents", ""],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "confirmed"
+                },
+                {
+                  "key": "priority",
+                  "value": "High"
+                }
+              ]
+            },
+            "description": "List incidents with optional filtering"
+          }
+        },
+        {
+          "name": "Get Incident Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/incidents/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "incidents", "1", ""]
+            },
+            "description": "Get incident with embedded hazards and images"
+          }
+        },
+        {
+          "name": "Create Incident with Images",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "incident_type",
+                  "value": "Flood",
+                  "type": "text"
+                },
+                {
+                  "key": "location_description",
+                  "value": "Makati Avenue near Greenbelt",
+                  "type": "text"
+                },
+                {
+                  "key": "reported_datetime",
+                  "value": "2024-06-01T10:30:00Z",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": \"Waist-deep flooding observed\",\n                  \"type\": \"text\"\n                },\n                {\n                  \"key\": \"images\",\n                  \"type\": \"file\",\n                  \"src\": \"flood_photo_1.jpg\"\n                },\n                {\n                  \"key\": \"images\",\n                  \"type\": \"file\",\n                  \"src\": \"flood_photo_2.jpg\"\n                }\n              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/api/incidents/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "incidents", ""]
+            },
+            "description": "Create incident with inline multiple hazard images via formset"
+          }
+        },
+        {
+          "name": "Update Incident",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"resolved\",\n  \"resolution_notes\": \"Floodwaters receded by 6PM\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/incidents/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "incidents", "1", ""]
+            },
+            "description": "Update incident status"
+          }
+        },
+        {
+          "name": "Assign Incident to User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assigned_to\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/incidents/1/assign/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "incidents", "1", "assign", ""]
+            },
+            "description": "Assign incident to dispatcher (Admin only)"
+          }
+        },
+        {
+          "name": "Update Incident Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"confirmed\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/incidents/1/update_status/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "incidents", "1", "update_status", ""]
+            },
+            "description": "Update incident status (Dispatcher/Admin)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Incident Logs",
+      "item": [
+        {
+          "name": "List Audit Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/incident-logs/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "incident-logs", ""]
+            },
+            "description": "Get all incident logs (Admin only)"
+          }
+        },
+        {
+          "name": "Get Log Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/incident-logs/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "incident-logs", "1", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bulk Updates",
+      "item": [
+        {
+          "name": "List Bulk Update Jobs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bulk-updates/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bulk-updates", ""]
+            },
+            "description": "Get all bulk update jobs with execution status"
+          }
+        },
+        {
+          "name": "Create Bulk Update Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filter_criteria\": {\n    \"hazard_type\": \"Heavy Rain\",\n    \"current_alert_level\": \"Yellow\"\n  },\n  \"update_data\": {\n    \"current_alert_level\": \"Red\"\n  },\n  \"description\": \"Escalate all Heavy Rain hazards to Red alert\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/bulk-updates/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bulk-updates", ""]
+            },
+            "description": "Create bulk update job (scheduled for later execution)"
+          }
+        },
+        {
+          "name": "Execute Bulk Update Job",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/bulk-updates/1/execute/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "bulk-updates", "1", "execute", ""]
+            },
+            "description": "Execute bulk update job immediately"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", ""]
+            },
+            "description": "List all users (Admin only)"
+          }
+        },
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "me", ""]
+            },
+            "description": "Get current user profile"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard & Analytics",
+      "item": [
+        {
+          "name": "Dashboard Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/incidents/dashboard/",
+              "host": ["{{base_url}}"],
+              "path": ["incidents", "dashboard", ""]
+            },
+            "description": "Get dashboard statistics: total, confirmed, unresolved, high-priority incidents"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
