@@ -17,6 +17,13 @@ User = get_user_model()
 demo_accounts_checked = False
 
 
+def _get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        return x_forwarded_for.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR')
+
+
 class CustomLoginView(auth_views.LoginView):
     template_name = 'accounts/login.html'
 
@@ -25,6 +32,16 @@ class CustomLoginView(auth_views.LoginView):
         if not demo_accounts_checked:
             demo_accounts_checked = ensure_demo_accounts()
         return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        try:
+            username = form.cleaned_data.get('username')
+            if username:
+                AccessAttempt.objects.filter(username__iexact=username).delete()
+        except Exception:
+            pass
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -41,9 +58,14 @@ class CustomLoginView(auth_views.LoginView):
         if not username:
             return None
 
-        # Show a friendly unlock message if Axes has locked this username.
+        ip_address = _get_client_ip(self.request)
+
+        # Show a friendly unlock message if Axes has locked this username and IP address.
         try:
-            if AxesProxyHandler.is_locked(self.request, {'username': username}):
+            if AxesProxyHandler.is_locked(self.request, {
+                'username': username,
+                'ip_address': ip_address,
+            }):
                 return (
                     'Your account has been temporarily locked after too many failed login attempts. '
                     'Use the "Forgot password?" link below to reset your password and unlock your account immediately, '

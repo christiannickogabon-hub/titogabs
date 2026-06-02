@@ -268,6 +268,7 @@ AXES_LOCK_OUT_AT_FAILURE = True
 AXES_VERBOSE = True
 AXES_LOCKOUT_URL = '/login/locked/'
 AXES_LOCKOUT_TEMPLATE = 'accounts/axes_locked_out.html'
+AXES_USERNAME_FORM_FIELD = 'username'
 AXES_LOCKOUT_PARAMETERS = ['username', 'ip_address']
 AXES_RESET_ON_SUCCESS = True
 
