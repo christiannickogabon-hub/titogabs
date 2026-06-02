@@ -5,7 +5,8 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.urls import reverse_lazy
-from axes.models import AxesAttempt
+from axes.handlers import AxesProxyHandler
+from axes.models import AccessAttempt
 from .forms import UserCreationForm, UserChangeForm, PublicRegistrationForm
 from .decorators import admin_required
 
@@ -32,9 +33,7 @@ class CustomLoginView(auth_views.LoginView):
 
         # Show a friendly unlock message if Axes has locked this username.
         try:
-            from axes.attempts import is_already_locked
-
-            if is_already_locked(self.request):
+            if AxesProxyHandler.is_locked(self.request, {'username': username}):
                 return (
                     'Your account has been temporarily locked after too many failed login attempts. '
                     'Use the "Forgot password?" link below to reset your password and unlock your account immediately, '
@@ -54,7 +53,7 @@ class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
         response = super().form_valid(form)
         try:
             user = form.user
-            AxesAttempt.objects.filter(username__iexact=user.username).delete()
+            AccessAttempt.objects.filter(username__iexact=user.username).delete()
         except Exception:
             pass
         return response
