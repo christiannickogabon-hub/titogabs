@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from axes.handlers.proxy import AxesProxyHandler
 from axes.models import AccessAttempt
 from .forms import UserCreationForm, UserChangeForm, PublicRegistrationForm
-from .decorators import admin_required
+from .decorators import superuser_required
 from .demo import ensure_demo_accounts
 from .models import AccountActivity
 
@@ -123,9 +123,9 @@ def logout_view(request):
 
 
 @login_required
-@admin_required
+@superuser_required
 def user_list(request):
-    """List all users (Admin only)"""
+    """List all users (Superadmin only)"""
     users = User.objects.prefetch_related('activities').all()
     context = {
         'users': users,
@@ -134,7 +134,7 @@ def user_list(request):
 
 
 @login_required
-@admin_required
+@superuser_required
 def account_activity(request):
     """Show login/logout activity for all accounts."""
     activities = AccountActivity.objects.select_related('user').all()
@@ -147,9 +147,9 @@ def account_activity(request):
 
 
 @login_required
-@admin_required
+@superuser_required
 def user_create(request):
-    """Create a new user (Admin only)"""
+    """Create a new user (Superadmin only)"""
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -166,9 +166,9 @@ def user_create(request):
 
 
 @login_required
-@admin_required
+@superuser_required
 def user_update(request, pk):
-    """Update user (Admin only)"""
+    """Update user (Superadmin only)"""
     user = get_object_or_404(User, pk=pk)
     
     if request.method == 'POST':

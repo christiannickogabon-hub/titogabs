@@ -39,6 +39,20 @@ def admin_required(view_func):
     return wrapper
 
 
+def superuser_required(view_func):
+    """Decorator to require Django superuser access."""
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+
+        if not request.user.is_superuser:
+            return HttpResponseForbidden('Only the superadmin can access this resource.')
+
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+
 def dispatcher_or_admin_required(view_func):
     """Decorator to require dispatcher or admin role"""
     @wraps(view_func)
