@@ -188,6 +188,7 @@ python manage.py runserver
 ## Maintained Documentation
 
 - `DEPLOYMENT_GUIDE.md` - deployment reference
+- `SYSTEM_DOCUMENTATION.md` - full system architecture and operations documentation
 - `API_DOCUMENTATION.md` - API usage details
 - `TESTING.md` - manual and API testing checklist
 - `SECURITY_AUDIT_REPORT.md` - security notes and audit context

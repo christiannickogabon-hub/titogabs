@@ -28,7 +28,7 @@ services:
       - key: CORS_ALLOWED_ORIGINS
         value: "https://alertgov-santa-fe-leyte.onrender.com"
       - key: CLOUDINARY_CLOUD_NAME
-        sync: false
+        value: "dpjhmjhtv"
       - key: CLOUDINARY_API_KEY
         sync: false
       - key: CLOUDINARY_API_SECRET
