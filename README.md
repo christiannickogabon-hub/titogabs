@@ -20,7 +20,7 @@ AlertGov is a Django-based web and API application for monitoring hazards, loggi
 - Hazard and sensor management through API/admin tooling
 - Role-based access control and anti-IDOR filtering
 - Superadmin-only user management and account activity logs
-- Public viewer read-only access to confirmed incidents
+- Public viewer read-only access to the incident report table
 - API documentation through Swagger at `/api/docs/`
 - Brute-force login protection with django-axes
 - Password reset and account lockout support
@@ -34,7 +34,7 @@ AlertGov is a Django-based web and API application for monitoring hazards, loggi
 | Superadmin | Full access to dashboard, users, account activity, Django admin, incidents, hazards, sensors, and API operations |
 | Admin | System operations and incident/hazard management, without access to Users or Activity pages |
 | Dispatcher | Create and update assigned/reported incidents |
-| Viewer | Read-only dashboard for confirmed public incidents |
+| Viewer | Read-only dashboard access to the incident report table |
 
 ## Technology Stack
 
@@ -163,7 +163,7 @@ If an incident is linked to one or more hazards, the dashboard uses the linked h
 - The login page does not display demo credentials.
 - Users and account activity are visible only to the Django superuser account.
 - Admin users do not have access to the Users or Activity pages.
-- Public viewers only see confirmed incidents.
+- Public viewers can see the dashboard incident report table but cannot create or edit incidents.
 - Coordinates are masked in public API serializers.
 - Failed login attempts are rate-limited with django-axes.
 - Login and logout events are recorded in `AccountActivity`.

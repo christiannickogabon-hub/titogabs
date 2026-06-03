@@ -345,7 +345,11 @@
                                 <td>{{ incident.reported_by.username }}</td>
                                 <td>{{ incident.created_at|date:"M d, Y H:i" }}</td>
                                 <td>
+                                    {% if user.role != 'viewer' or incident.status == 'confirmed' %}
                                     <a href="{% url 'incident_detail' incident.pk %}" class="btn btn-sm btn-info">View</a>
+                                    {% else %}
+                                    <span class="text-muted small">Read-only</span>
+                                    {% endif %}
                                     {% if user.is_superuser or user.role == 'admin' or user.role == 'dispatcher' %}
                                     <a href="{% url 'incident_update' incident.pk %}" class="btn btn-sm btn-warning">Edit</a>
                                     {% endif %}

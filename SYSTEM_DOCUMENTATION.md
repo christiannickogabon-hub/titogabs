@@ -9,7 +9,7 @@ The system has two main interfaces:
 - A web interface for users who work through browser pages.
 - A REST API for clients, tools, and integrations that need structured JSON access.
 
-The project is designed around municipal operations. Admins manage hazards and system data, dispatchers report and update incidents, public viewers can see confirmed public information, and the Django superuser manages user accounts and account activity.
+The project is designed around municipal operations. Admins manage hazards and system data, dispatchers report and update incidents, public viewers can review the read-only incident report table, and the Django superuser manages user accounts and account activity.
 
 ## 2. System goals
 
@@ -73,7 +73,7 @@ alertgov/
 | Superadmin | Django superuser. Highest-level operator. | Full application access, Django admin, user management, account activity, all incidents, all API operations. |
 | Admin | Local government admin. | Incident and hazard management, assignment, bulk operations, API writes for protected resources. |
 | Dispatcher | Field or operations user. | Create incidents, update incidents they reported or are assigned to, upload incident images. |
-| Viewer | Public viewer account. | Read-only dashboard access to confirmed incidents only. |
+| Viewer | Public viewer account. | Read-only dashboard access to the incident report table. |
 
 The custom user model is defined in `accounts/models.py`. It extends Django `AbstractUser` and adds:
 
@@ -98,7 +98,7 @@ Superadmin access is controlled through Django's `is_superuser` flag.
 1. A visitor opens `/register/`.
 2. The registration form creates a user account.
 3. The system automatically sets the new account role to `viewer`.
-4. The viewer logs in and can access public confirmed incident information.
+4. The viewer logs in and can access the incident report table in read-only mode.
 
 ### 7.2 Login and lockout
 
@@ -125,9 +125,9 @@ Incident visibility is role-filtered:
 | Superadmin | All incidents |
 | Admin | All incidents |
 | Dispatcher | Incidents they reported or were assigned to |
-| Viewer | Confirmed incidents only |
+| Viewer | All incidents in the dashboard report table, without create or edit controls |
 
-This rule is applied in both web views and API viewsets.
+The dashboard uses this table visibility rule for browser users. API viewsets still apply stricter serializer and queryset rules for JSON clients.
 
 ### 7.5 Incident update
 
@@ -339,7 +339,7 @@ After deployment:
 - Confirm login works.
 - Confirm failed login lockout works.
 - Confirm dashboard data loads by role.
-- Confirm viewer users only see confirmed incidents.
+- Confirm viewer users can see the dashboard incident report table but cannot create or edit incidents.
 - Confirm dispatcher users cannot open unrelated incidents.
 - Confirm admin users can assign and update incidents.
 - Confirm incident logs are created.

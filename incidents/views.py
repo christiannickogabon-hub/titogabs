@@ -406,7 +406,7 @@ def dashboard(request):
             Q(reported_by=user) | Q(assigned_to=user)
         )
     else:
-        incidents = Incident.objects.filter(status='confirmed')
+        incidents = Incident.objects.all()
     
     # Apply filters
     if filter_form.is_valid():
