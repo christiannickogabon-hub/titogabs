@@ -1,6 +1,6 @@
 # AlertGov
 
-Local Government Disaster Early Warning and Incident Management System for Santa Fe, Leyte.
+Local Government Disaster Early Warning and Incident Management System for Carigara, Leyte.
 
 AlertGov is a Django-based web and API application for monitoring hazards, logging incidents, managing response workflows, and keeping an audit trail of system usage. It is designed for role-based municipal operations: superadmin, admin, dispatcher, and public viewer.
 
