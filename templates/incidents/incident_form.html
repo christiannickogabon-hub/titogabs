@@ -1,60 +1,114 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Incident - Santa Fe, Leyte AlertGov{% endblock %}
+{% block title %}Incident - Municipality of Carigara, Leyte AlertGov{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header">
-                    <h4>{% if incident %}Update Incident{% else %}Report New Incident{% endif %}</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
+<main class="py-5">
+    <div class="container">
+        <h1 class="section-title"><i class="fas fa-fire"></i> {% if incident %}Update Incident{% else %}Report New Incident{% endif %}</h1>
+        
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="card" style="border: 2px solid #00bcd4;">
+                    <form method="post" enctype="multipart/form-data" novalidate>
                         {% csrf_token %}
                         
                         <!-- Primary Incident Form -->
-                        <h5 class="mb-3">Incident Details</h5>
-                        {{ form.as_p }}
-
-                        <!-- Hazard Images Formset (Inline) -->
-                        <h5 class="mb-3 mt-4">Attach Hazard Images</h5>
-                        <div id="formset-container">
-                            {{ formset.management_form }}
-                            {% for form in formset %}
-                            <div class="formset-row card p-3 mb-2">
-                                {% if forloop.first %}<p class="text-muted">You can attach multiple images for documentation</p>{% endif %}
-                                {{ form.as_p }}
-                                {% if form.non_form_errors %}
-                                    <div class="alert alert-danger">{{ form.non_form_errors }}</div>
-                                {% endif %}
-                            </div>
+                        <div class="card-body" style="padding: 2.5rem;">
+                            <h4 style="color: #00bcd4; margin-bottom: 2rem; font-weight: 700;"><i class="fas fa-info-circle"></i> Incident Details</h4>
+                            
+                            {% for field in form %}
+                                <div class="mb-4">
+                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                    {% if field.help_text %}
+                                    <small style="color: #a0aab5; display: block; margin-bottom: 0.5rem;">{{ field.help_text|safe }}</small>
+                                    {% endif %}
+                                    {{ field }}
+                                    {% if field.errors %}
+                                    <div style="color: #ff6b6b; font-size: 0.9rem; margin-top: 0.25rem;">{{ field.errors|striptags }}</div>
+                                    {% endif %}
+                                </div>
                             {% endfor %}
+
+                            <hr style="border-color: #00bcd4; opacity: 0.3; margin: 2rem 0;">
+
+                            <!-- Hazard Images Formset -->
+                            <h4 style="color: #00bcd4; margin-bottom: 1.5rem; font-weight: 700;"><i class="fas fa-image"></i> Attach Hazard Images</h4>
+                            <div id="formset-container">
+                                {{ formset.management_form }}
+                                {% if formset.non_form_errors %}
+                                    <div class="alert" style="background: rgba(255, 107, 107, 0.1); border-left: 4px solid #ff6b6b; margin-bottom: 1.5rem;">
+                                        <strong style="color: #ff6b6b;">Error</strong>
+                                        {% for error in formset.non_form_errors %}
+                                        <p class="mb-0">{{ error }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                
+                                {% for form in formset %}
+                                <div class="formset-row" style="background: #252d3d; border: 1px solid #00bcd4; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                                    {% if forloop.first %}
+                                    <p style="color: #a0aab5; font-size: 0.9rem; margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> You can attach multiple images for documentation</p>
+                                    {% endif %}
+                                    
+                                    {% for field in form %}
+                                        {% if field.name != 'DELETE' %}
+                                        <div class="mb-3">
+                                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                            {{ field }}
+                                            {% if field.errors %}
+                                            <div style="color: #ff6b6b; font-size: 0.9rem; margin-top: 0.25rem;">{{ field.errors|striptags }}</div>
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                    
+                                    <!-- Delete checkbox -->
+                                    {% if not forloop.first %}
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            {{ form.DELETE }}
+                                            <span style="color: #ff6b6b; margin-left: 0.5rem;">Remove this image</span>
+                                        </label>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if form.non_form_errors %}
+                                        <div class="alert" style="background: rgba(255, 107, 107, 0.1); border-left: 4px solid #ff6b6b;">
+                                            {{ form.non_form_errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
 
-                        <div class="mt-4">
-                            <button type="submit" class="btn btn-primary">
-                                {% if incident %}Update Incident{% else %}Create Incident{% endif %}
+                        <div class="card-footer d-flex gap-2" style="padding: 1.5rem;">
+                            <button type="submit" class="btn btn-primary" style="flex: 1;">
+                                <i class="fas fa-save"></i> {% if incident %}Update Incident{% else %}Report Incident{% endif %}
                             </button>
-                            <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'dashboard' %}" class="btn" style="background: transparent; border: 1px solid #00bcd4; color: #00bcd4; flex: 1;">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</main>
 
 <script>
-// Handle formset add/remove functionality (optional)
+// Handle formset add/remove functionality
 document.querySelectorAll('.DELETE input').forEach(function(checkbox) {
     checkbox.addEventListener('change', function() {
         if (this.checked) {
-            this.closest('.formset-row').style.opacity = '0.5';
+            this.closest('.formset-row').style.opacity = '0.6';
+            this.closest('.formset-row').style.background = '#1a2332';
         } else {
             this.closest('.formset-row').style.opacity = '1';
+            this.closest('.formset-row').style.background = '#252d3d';
         }
     });
 });

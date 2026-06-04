@@ -74,7 +74,7 @@ curl -X GET "http://localhost:8000/api/incidents/sensors/?sensor_type=earthquake
       "sensor_type": "earthquake",
       "latitude": 11.19,
       "longitude": 124.92,
-      "location_description": "Municipal Hall Area, Santa Fe, Leyte",
+      "location_description": "Municipal Hall Area, Carigara, Leyte",
       "contact_info": null,
       "last_reading": "2026-06-01T10:30:00Z",
       "is_active": true,
@@ -166,7 +166,7 @@ curl -X GET "http://localhost:8000/api/incidents/incidents/?status=confirmed&pri
         "email": "dispatcher@alertgov.local",
         "role": "dispatcher"
       },
-      "location_description": "Santa Fe, Leyte",
+      "location_description": "Carigara, Leyte",
       "created_at": "2026-05-20T15:30:00Z",
       "updated_at": "2026-06-01T10:30:00Z"
     }

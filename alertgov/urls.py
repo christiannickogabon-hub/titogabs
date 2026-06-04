@@ -20,6 +20,20 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
+from rest_framework.routers import DefaultRouter
+from incidents.views import (
+    SensorViewSet, HazardViewSet, IncidentViewSet, HazardImageViewSet,
+    IncidentLogViewSet, IncidentBulkUpdateViewSet
+)
+
+# API Router
+api_router = DefaultRouter()
+api_router.register(r'sensors', SensorViewSet, basename='api-sensor')
+api_router.register(r'hazards', HazardViewSet, basename='api-hazard')
+api_router.register(r'incidents', IncidentViewSet, basename='api-incident')
+api_router.register(r'images', HazardImageViewSet, basename='api-hazard-image')
+api_router.register(r'incident-logs', IncidentLogViewSet, basename='api-incident-log')
+api_router.register(r'bulk-updates', IncidentBulkUpdateViewSet, basename='api-bulk-update')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,8 +41,11 @@ urlpatterns = [
     # Root and accounts
     path('', include('accounts.urls')),
     
-    # Incidents app
+    # Incidents app (web views only)
     path('incidents/', include('incidents.urls')),
+    
+    # API endpoints (at root api/)
+    path('api/', include(api_router.urls)),
     
     # JWT Token endpoints
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -1,31 +1,45 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Account Locked - Santa Fe, Leyte AlertGov{% endblock %}
+{% block title %}Account Locked - Municipality of Carigara, Leyte AlertGov{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card border-danger shadow-sm">
-                <div class="card-header bg-danger text-white">
-                    <h3 class="mb-0"><i class="fas fa-lock"></i> Account Locked</h3>
-                </div>
-                <div class="card-body">
-                    <p class="lead">Your account has been temporarily locked because of too many failed login attempts.</p>
-                    <p>Please try one of the following:</p>
-                    <ul>
-                        <li>Use the <strong>Forgot password?</strong> link to reset your password and unlock your account immediately.</li>
-                        <li>Wait <strong>30 minutes</strong> and try logging in again.</li>
-                    </ul>
-                    <p class="text-muted">If you still cannot access your account after trying these steps, contact an administrator for help.</p>
-                    <div class="mt-4 d-flex flex-column flex-sm-row gap-2">
-                        <a href="{% url 'login' %}" class="btn btn-primary">Back to Login</a>
-                        <a href="{% url 'password_reset' %}" class="btn btn-outline-secondary">Reset Password</a>
+<main class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card" style="border: 2px solid #ff6b6b;">
+                    <div class="card-header" style="background: linear-gradient(90deg, #0f1419, #1a2332); padding: 2rem; text-align: center; border-bottom: 2px solid #ff6b6b;">
+                        <div style="font-size: 3rem; color: #ff6b6b; margin-bottom: 1rem;"><i class="fas fa-lock"></i></div>
+                        <h2 style="color: #ff6b6b; font-weight: 700; margin-bottom: 0;">Account Locked</h2>
+                    </div>
+                    <div class="card-body" style="padding: 2.5rem;">
+                        <div class="alert" style="background: rgba(255, 107, 107, 0.1); border-left: 4px solid #ff6b6b; margin-bottom: 2rem;">
+                            <p style="color: #ff6b6b; margin-bottom: 0;"><strong><i class="fas fa-exclamation-triangle"></i> Your account has been temporarily locked</strong></p>
+                            <p style="color: #a0aab5; font-size: 0.9rem; margin-top: 0.5rem; margin-bottom: 0;">Due to multiple failed login attempts for your security.</p>
+                        </div>
+
+                        <h5 style="color: #e8f0f5; margin-bottom: 1.5rem; font-weight: 700;"><i class="fas fa-lightbulb"></i> What you can do:</h5>
+                        <ul style="color: #e8f0f5; line-height: 2;">
+                            <li><strong>Reset your password:</strong> Use the <span style="color: #00bcd4;">Forgot Password</span> link to reset and unlock immediately</li>
+                            <li><strong>Wait 30 minutes:</strong> Try logging in again after the lockout period expires</li>
+                            <li><strong>Contact support:</strong> If you need immediate assistance, contact an administrator</li>
+                        </ul>
+
+                        <hr style="border-color: #ff6b6b; opacity: 0.3; margin: 2rem 0;">
+
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'password_reset' %}" class="btn btn-primary" style="padding: 0.75rem; font-weight: 600;">
+                                <i class="fas fa-key"></i> Reset Password
+                            </a>
+                            <a href="{% url 'login' %}" class="btn" style="background: transparent; border: 1px solid #00bcd4; color: #00bcd4; padding: 0.75rem; font-weight: 600;">
+                                <i class="fas fa-arrow-left"></i> Back to Login
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</main>
 {% endblock %}

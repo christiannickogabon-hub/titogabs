@@ -1,56 +1,61 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Users - Santa Fe, Leyte AlertGov{% endblock %}
+{% block title %}Users - Municipality of Carigara, Leyte AlertGov{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <h1>User Management</h1>
-    
-    <div class="mb-3">
-        <a href="{% url 'user_create' %}" class="btn btn-primary">+ Add New User</a>
-        <a href="{% url 'account_activity' %}" class="btn btn-outline-secondary">View Account Activity</a>
-    </div>
+<main class="py-5">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="section-title mb-0"><i class="fas fa-users"></i> User Management</h1>
+            <div class="d-flex gap-2">
+                <a href="{% url 'user_create' %}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add User</a>
+                <a href="{% url 'account_activity' %}" class="btn" style="background: transparent; border: 1px solid #00bcd4; color: #00bcd4;"><i class="fas fa-history"></i> Activity</a>
+            </div>
+        </div>
 
-    <div class="card">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Full Name</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Created</th>
-                        <th>Last Login</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for user in users %}
-                    <tr>
-                        <td><strong>{{ user.username }}</strong></td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.get_full_name|default:"-" }}</td>
-                        <td><span class="badge badge-secondary">{{ user.get_role_display }}</span></td>
-                        <td>
-                            {% if user.is_active %}
-                            <span class="badge badge-success">Active</span>
-                            {% else %}
-                            <span class="badge badge-danger">Inactive</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ user.date_joined|date:"M d, Y" }}</td>
-                        <td>{{ user.last_login|date:"M d, Y H:i"|default:"Never" }}</td>
-                        <td>
-                            <a href="{% url 'user_update' user.pk %}" class="btn btn-sm btn-warning">Edit</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="card" style="border: 2px solid #00bcd4;">
+            <div class="table-responsive">
+                <table class="table" style="margin-bottom: 0;">
+                    <thead>
+                        <tr style="background: #252d3d; border-bottom: 2px solid #00bcd4;">
+                            <th style="color: #00bcd4; font-weight: 700;">Username</th>
+                            <th style="color: #00bcd4; font-weight: 700;">Email</th>
+                            <th style="color: #00bcd4; font-weight: 700;">Full Name</th>
+                            <th style="color: #00bcd4; font-weight: 700;">Role</th>
+                            <th style="color: #00bcd4; font-weight: 700;">Status</th>
+                            <th style="color: #00bcd4; font-weight: 700;">Created</th>
+                            <th style="color: #00bcd4; font-weight: 700;">Last Login</th>
+                            <th style="color: #00bcd4; font-weight: 700;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr style="border-bottom: 1px solid #252d3d; transition: background 0.3s;" onmouseover="this.style.background='#252d3d'" onmouseout="this.style.background=''">
+                            <td style="color: #e8f0f5; font-weight: 600;">{{ user.username }}</td>
+                            <td style="color: #a0aab5;">{{ user.email }}</td>
+                            <td style="color: #e8f0f5;">{{ user.get_full_name|default:"-" }}</td>
+                            <td><span class="badge" style="background: #00bcd4; color: #000; font-weight: 600;">{{ user.get_role_display }}</span></td>
+                            <td>
+                                {% if user.is_active %}
+                                <span class="badge" style="background: rgba(40, 167, 69, 0.2); color: #28a745; border: 1px solid #28a745; font-weight: 600;">Active</span>
+                                {% else %}
+                                <span class="badge" style="background: rgba(220, 53, 69, 0.2); color: #ff6b6b; border: 1px solid #ff6b6b; font-weight: 600;">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <td style="color: #a0aab5;">{{ user.date_joined|date:"M d, Y" }}</td>
+                            <td style="color: #a0aab5;">{{ user.last_login|date:"M d, Y H:i"|default:"Never" }}</td>
+                            <td>
+                                <a href="{% url 'user_update' user.pk %}" class="btn btn-sm" style="background: transparent; border: 1px solid #00bcd4; color: #00bcd4; padding: 0.25rem 0.75rem;">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+</main>
 {% endblock %}

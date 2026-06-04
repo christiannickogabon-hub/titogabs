@@ -61,28 +61,28 @@ def create_demo_sensors():
 
     sensors_data = [
         {
-            'name': 'Santa Fe Municipal Earthquake Sensor',
+            'name': 'Carigara Municipal Earthquake Sensor',
             'sensor_type': 'earthquake',
             'latitude': 11.1850,
             'longitude': 124.9165,
-            'location_description': 'Municipal Hall Area, Santa Fe, Leyte',
-            'contact_info': 'seismic@santafe-leyte.gov.ph',
+            'location_description': 'Municipal Hall Area, Carigara, Leyte',
+            'contact_info': 'seismic@carigara-leyte.gov.ph',
         },
         {
-            'name': 'Santa Fe Flood Monitoring Station',
+            'name': 'Carigara Flood Monitoring Station',
             'sensor_type': 'flood',
             'latitude': 11.1904,
             'longitude': 124.9202,
-            'location_description': 'Low-Lying Residential Area, Santa Fe, Leyte',
-            'contact_info': 'flood@santafe-leyte.gov.ph',
+            'location_description': 'Low-Lying Residential Area, Carigara, Leyte',
+            'contact_info': 'flood@carigara-leyte.gov.ph',
         },
         {
-            'name': 'Santa Fe Landslide Detection System',
+            'name': 'Carigara Landslide Detection System',
             'sensor_type': 'landslide',
             'latitude': 11.1768,
             'longitude': 124.9098,
-            'location_description': 'Upland Monitoring Zone, Santa Fe, Leyte',
-            'contact_info': 'geological@santafe-leyte.gov.ph',
+            'location_description': 'Upland Monitoring Zone, Carigara, Leyte',
+            'contact_info': 'geological@carigara-leyte.gov.ph',
         },
     ]
 
@@ -105,19 +105,19 @@ def create_demo_hazards():
 
     hazard_data = [
         {
-            'name': 'Santa Fe Earthquake Alert',
+            'name': 'Carigara Earthquake Alert',
             'hazard_type': 'earthquake',
             'alert_level': 'yellow',
             'description': 'Low-magnitude seismic activity detected',
         },
         {
-            'name': 'Santa Fe Flood Warning',
+            'name': 'Carigara Flood Warning',
             'hazard_type': 'flood',
             'alert_level': 'orange',
             'description': 'Water levels rising due to continuous rainfall',
         },
         {
-            'name': 'Santa Fe Landslide Risk',
+            'name': 'Carigara Landslide Risk',
             'hazard_type': 'landslide',
             'alert_level': 'green',
             'description': 'Stable conditions - routine monitoring continues',
@@ -144,23 +144,23 @@ def create_demo_incidents():
     dispatcher = User.objects.filter(role='dispatcher').first()
     incident_data = [
         {
-            'title': 'Earthquake Tremor Reported in Santa Fe',
-            'description': 'Residents reported mild tremor around 2:15 AM in Santa Fe, Leyte',
+            'title': 'Earthquake Tremor Reported in Carigara',
+            'description': 'Residents reported mild tremor around 2:15 AM in Carigara, Leyte',
             'incident_type': 'earthquake',
             'status': 'confirmed',
             'latitude': 11.1850,
             'longitude': 124.9165,
-            'location_description': 'Municipal Hall Area, Santa Fe, Leyte',
+            'location_description': 'Municipal Hall Area, Carigara, Leyte',
             'priority': 2,
         },
         {
-            'title': 'Localized Flooding in Santa Fe Poblacion',
+            'title': 'Localized Flooding in Carigara Poblacion',
             'description': 'Heavy rain caused street flooding near the Poblacion area',
             'incident_type': 'flood',
             'status': 'investigating',
             'latitude': 11.1904,
             'longitude': 124.9202,
-            'location_description': 'Poblacion, Santa Fe, Leyte',
+            'location_description': 'Poblacion, Carigara, Leyte',
             'priority': 4,
         },
     ]

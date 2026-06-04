@@ -157,17 +157,29 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-STORAGES = {
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-    },
-    'default': {
-        'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage'
-        if config('CLOUDINARY_CLOUD_NAME', default='')
-        else 'django.core.files.storage.FileSystemStorage',
-    },
-}
+
+# Tell Django where to find static files for development
+STATICFILES_DIRS = [BASE_DIR / 'static']
+if DEBUG:
+    STORAGES = {
+        'staticfiles': {
+            'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        },
+        'default': {
+            'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        },
+    }
+else:
+    STORAGES = {
+        'staticfiles': {
+            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        },
+        'default': {
+            'BACKEND': 'cloudinary_storage.storage.MediaCloudinaryStorage'
+            if config('CLOUDINARY_CLOUD_NAME', default='')
+            else 'django.core.files.storage.FileSystemStorage',
+        },
+    }
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -220,7 +232,7 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Santa Fe, Leyte AlertGov API',
+    'TITLE': 'Municipality of Carigara, Leyte AlertGov API',
     'DESCRIPTION': 'Disaster early warning and incident management API.',
     'VERSION': '1.0.0',
     'ENUM_NAME_OVERRIDES': {

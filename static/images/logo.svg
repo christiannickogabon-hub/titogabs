@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" width="220" height="48" role="img" aria-labelledby="title desc">
+  <title id="title">Municipality of Carigara - AlertGov</title>
+  <desc id="desc">Fallback logo: shield with lightning bolt and label 'Carigara AlertGov'</desc>
+  <defs>
+    <linearGradient id="g" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0b5ed7"/>
+      <stop offset="100%" stop-color="#0a58ca"/>
+    </linearGradient>
+  </defs>
+  <rect width="220" height="48" rx="8" fill="url(#g)" />
+  <g transform="translate(12,6)" aria-hidden="true">
+    <path d="M18 2 L10 24 L20 24 L12 46 L34 20 L24 20 Z" fill="#fff"/>
+  </g>
+  <text x="60" y="32" font-family="Inter, Arial, sans-serif" font-weight="700" font-size="16" fill="#ffffff">Carigara AlertGov</text>
+</svg>

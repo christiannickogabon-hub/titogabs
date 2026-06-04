@@ -1,0 +1,313 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Nunito:wght@300;400;700&display=swap');
+:root {
+    --neon-pink: #ff2d95;
+    --neon-cyan: #00d4ff;
+    --neon-green: #4cffb5;
+    --bg-dark-1: #05060a;
+    --bg-dark-2: #061526;
+    --panel-trans: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(0, 212, 255, 0.06);
+    --panel-bg: rgba(255, 255, 255, 0.03);
+    --muted: rgba(230, 244, 255, 0.85);
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body.cyberpunk {
+    font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    color: var(--muted);
+    background: #05060a;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* TEMP VISUAL TEST: remove or comment out after verifying the CSS is loading
+   This makes the background very obvious so you can confirm the stylesheet is active. */
+
+body.cyberpunk.test-visual {
+    background: linear-gradient(90deg, rgba(0, 212, 255, 0.12), rgba(255, 45, 149, 0.12)) !important;
+}
+
+
+/* Faded logo background with neon tint + gentle pulse */
+
+body.cyberpunk::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url('/static/images/logo.png');
+    background-repeat: no-repeat;
+    background-position: center 8%;
+    background-size: var(--logo-size, 36%);
+    opacity: 0.08;
+    mix-blend-mode: screen;
+    filter: blur(1px) saturate(1.15);
+    transition: opacity 1s ease-in-out;
+}
+
+
+/* Neon tint overlay to give a cyan-pink cyberpunk hue and a slow pulse */
+
+body.cyberpunk::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 30% 30%, rgba(0, 212, 255, 0.08), transparent 15%), radial-gradient(circle at 70% 70%, rgba(255, 45, 149, 0.06), transparent 18%);
+    mix-blend-mode: screen;
+    filter: blur(12px) saturate(1.2);
+    animation: neonPulse 6s ease-in-out infinite alternate;
+}
+
+@keyframes neonPulse {
+    from {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.01);
+    }
+}
+
+.site-wrap {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Neon navbar */
+
+.navbar {
+    background: linear-gradient(90deg, #071021 0%, #001525 100%);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.06);
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);
+}
+
+.navbar-brand {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--neon-cyan);
+    letter-spacing: 0.6px;
+}
+
+.nav-link {
+    color: rgba(205, 233, 255, 0.9) !important
+}
+
+
+/* Cards, panels */
+
+.card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+    border: 1px solid rgba(0, 212, 255, 0.06);
+    color: var(--muted);
+    backdrop-filter: blur(6px) saturate(1.1);
+}
+
+.badge {
+    background: rgba(255, 45, 149, 0.12);
+    color: var(--neon-pink);
+    border: 1px solid rgba(255, 45, 149, 0.08);
+}
+
+.alert {
+    background: linear-gradient(90deg, rgba(255, 45, 149, 0.08), rgba(0, 212, 255, 0.04));
+    border: none;
+    color: #fff
+}
+
+
+/* Footer tweak */
+
+.site-footer {
+    background: linear-gradient(90deg, #05060a, #00121b);
+    border-top: 1px solid rgba(0, 212, 255, 0.04);
+}
+
+
+/* Utility neon glow */
+
+.neon-glow {
+    box-shadow: 0 0 18px rgba(0, 212, 255, 0.06), 0 0 32px rgba(255, 45, 149, 0.02);
+}
+
+
+/* Make sure main content sits above the faded background */
+
+main.py-4,
+main.py-3 {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Responsive adjustments */
+
+@media (max-width: 768px) {
+    body.cyberpunk::before {
+        background-size: 60%;
+        background-position: center -10%;
+    }
+}
+
+
+/* Helper classes to quickly change the faded logo size.
+    Add one of these classes to the <body> element alongside `cyberpunk`:
+    - `logo-small`  -> smaller faded logo (28%)
+    - `logo-medium` -> medium (36%) — default
+    - `logo-large`  -> larger faded logo (48%)
+*/
+
+body.logo-small {
+    --logo-size: 28%;
+}
+
+body.logo-medium {
+    --logo-size: 36%;
+}
+
+body.logo-large {
+    --logo-size: 48%;
+}
+
+
+/* subtle animated background gradient for depth */
+
+body.cyberpunk .animated-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(120deg, rgba(0, 212, 255, 0.02), rgba(255, 45, 149, 0.01), rgba(76, 255, 181, 0.015));
+    mix-blend-mode: overlay;
+    animation: bgShift 18s linear infinite;
+}
+
+@keyframes bgShift {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-3%) scale(1.02);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* Typography and link treatments */
+
+a,
+.nav-link {
+    color: var(--neon-cyan);
+    text-decoration: none;
+    transition: color .18s ease, text-shadow .18s ease;
+}
+
+a:hover,
+.nav-link:hover {
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.25), 0 0 20px rgba(255, 45, 149, 0.08);
+}
+
+
+/* Buttons */
+
+.btn-primary {
+    background: linear-gradient(90deg, rgba(0, 212, 255, 0.12), rgba(255, 45, 149, 0.12));
+    border: 1px solid rgba(0, 212, 255, 0.18);
+    color: #fff;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 212, 255, 0.06);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 28px rgba(0, 212, 255, 0.12);
+}
+
+.btn-outline-light {
+    color: var(--neon-cyan);
+    border-color: rgba(0, 212, 255, 0.12);
+}
+
+
+/* Forms */
+
+input.form-control,
+textarea.form-control,
+select.form-control {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--muted);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-control:focus {
+    outline: none;
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 18px rgba(0, 212, 255, 0.06);
+}
+
+
+/* Cards and panels */
+
+.card {
+    border-radius: 10px;
+    padding: .8rem;
+}
+
+.card .card-header {
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+
+/* Tables */
+
+table.table thead th {
+    background: linear-gradient(90deg, rgba(0, 212, 255, 0.04), rgba(255, 45, 149, 0.02));
+    color: var(--muted);
+}
+
+table.table tbody tr:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.01);
+}
+
+
+/* Small utilities */
+
+.neon {
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.08);
+}
+
+.panel-accent {
+    border-left: 4px solid var(--neon-pink);
+    padding-left: .8rem;
+}
+
+
+/* scanline subtle effect (optional) */
+
+.scanlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.01) 50%, rgba(0, 0, 0, 0.01) 51%);
+    background-size: 100% 6px;
+    mix-blend-mode: overlay;
+}

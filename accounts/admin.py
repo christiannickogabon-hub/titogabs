@@ -41,7 +41,7 @@ class UserAdmin(BaseUserAdmin):
             'viewer': '#28a745',
         }
         role_labels = {
-            'admin': 'Santa Fe Admin',
+            'admin': 'Carigara Admin',
             'dispatcher': 'Dispatcher',
             'viewer': 'Public Viewer',
         }

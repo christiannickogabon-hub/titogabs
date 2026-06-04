@@ -1,12 +1,43 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Santa Fe, Leyte Early Warning Dashboard{% endblock %}
+{% block title %}Municipality of Carigara, Leyte Early Warning Dashboard{% endblock %}
 
 {% block extra_css %}
 <style>
+    .stat-card {
+        border: 2px solid #00bcd4;
+        border-radius: 8px;
+        padding: 2rem;
+        text-align: center;
+        background: #1a2332;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 48px rgba(0, 188, 212, 0.2) !important;
+    }
+
+    .stat-card-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #00bcd4;
+        margin: 1rem 0;
+    }
+
+    .stat-card-label {
+        color: #a0aab5;
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
     .filter-panel {
-        background: #fff;
+        background: #1a2332 !important;
+        border: 1px solid #00bcd4 !important;
+        border-radius: 8px;
     }
 
     .filter-grid {
@@ -28,7 +59,7 @@
     .filter-field legend {
         display: block;
         margin-bottom: 0.4rem;
-        color: #495057;
+        color: #a0aab5 !important;
         font-size: 0.82rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -52,13 +83,19 @@
         min-height: 2.25rem;
         margin: 0;
         padding: 0.45rem 0.7rem;
-        border: 1px solid #dee2e6;
+        border: 1px solid #00bcd4 !important;
         border-radius: 0.35rem;
-        background: #f8f9fa;
-        color: #343a40;
+        background: #252d3d !important;
+        color: #e8f0f5 !important;
         font-size: 0.92rem;
         line-height: 1.2;
         cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-check:hover {
+        background: #00bcd4 !important;
+        color: #000 !important;
     }
 
     .filter-check input {
@@ -79,7 +116,7 @@
         gap: 0.75rem;
         margin-top: 1.25rem;
         padding-top: 1rem;
-        border-top: 1px solid #e9ecef;
+        border-top: 1px solid #00bcd4;
     }
 
     .filter-actions-group {
@@ -90,7 +127,7 @@
 
     .filter-errors {
         margin-top: 0.35rem;
-        color: #dc3545;
+        color: #ff6b6b;
         font-size: 0.85rem;
     }
 
@@ -125,246 +162,261 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid mt-4">
-    <h1>Santa Fe, Leyte Early Warning Dashboard</h1>
-    
-    <!-- Stats Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card bg-primary text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Total Incidents</h5>
-                    <h2>{{ stats.total_incidents }}</h2>
+<main class="py-5">
+    <div class="container-fluid">
+        <h1 class="section-title" style="margin-bottom: 2rem;"><i class="fas fa-tachometer-alt"></i> Early Warning Dashboard</h1>
+        
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-card-label"><i class="fas fa-exclamation-circle"></i> Total Incidents</div>
+                    <div class="stat-card-number">{{ stats.total_incidents }}</div>
+                    <small style="color: #a0aab5;">All time</small>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-card-label"><i class="fas fa-check-circle"></i> Confirmed</div>
+                    <div class="stat-card-number" style="color: #28a745;">{{ stats.confirmed }}</div>
+                    <small style="color: #a0aab5;">Verified incidents</small>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-card-label"><i class="fas fa-hourglass-half"></i> Unresolved</div>
+                    <div class="stat-card-number" style="color: #ffc107;">{{ stats.unresolved }}</div>
+                    <small style="color: #a0aab5;">Pending action</small>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="stat-card-label"><i class="fas fa-fire"></i> High Priority</div>
+                    <div class="stat-card-number" style="color: #ff6b6b;">{{ stats.high_priority }}</div>
+                    <small style="color: #a0aab5;">Critical attention</small>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-success text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Confirmed</h5>
-                    <h2>{{ stats.confirmed }}</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-warning text-white">
-                <div class="card-body">
-                    <h5 class="card-title">Unresolved</h5>
-                    <h2>{{ stats.unresolved }}</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card bg-danger text-white">
-                <div class="card-body">
-                    <h5 class="card-title">High Priority</h5>
-                    <h2>{{ stats.high_priority }}</h2>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Hazard Status -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Hazard Alert Levels</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-3 text-center">
-                            <span class="badge badge-danger" style="font-size: 1.2em;">RED: {{ hazard_summary.red }}</span>
-                            <p>Critical Risk</p>
-                        </div>
-                        <div class="col-md-3 text-center">
-                            <span class="badge badge-warning" style="font-size: 1.2em;">ORANGE: {{ hazard_summary.orange }}</span>
-                            <p>High Risk</p>
-                        </div>
-                        <div class="col-md-3 text-center">
-                            <span class="badge" style="background-color: #ffc107; font-size: 1.2em;">YELLOW: {{ hazard_summary.yellow }}</span>
-                            <p>Moderate Risk</p>
-                        </div>
-                        <div class="col-md-3 text-center">
-                            <span class="badge badge-success" style="font-size: 1.2em;">GREEN: {{ hazard_summary.green }}</span>
-                            <p>Low Risk</p>
+        <!-- Hazard Status -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card" style="border: 2px solid #00bcd4;">
+                    <div class="card-header" style="background: #252d3d; border-bottom: 2px solid #00bcd4; padding: 1.5rem;">
+                        <h5 style="color: #00bcd4; font-weight: 700; margin-bottom: 0;"><i class="fas fa-alert-circle"></i> Hazard Alert Levels</h5>
+                    </div>
+                    <div class="card-body" style="padding: 2rem;">
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <div style="background: rgba(220, 53, 69, 0.1); border-left: 4px solid #dc3545; padding: 1.5rem; border-radius: 8px;">
+                                    <span class="badge" style="background: #dc3545; color: white; font-size: 1.2rem; padding: 0.75rem 1rem; font-weight: 700;">RED</span>
+                                    <p style="color: #e8f0f5; margin: 1rem 0 0.5rem 0; font-weight: 600;">{{ hazard_summary.red }}</p>
+                                    <p style="color: #a0aab5; font-size: 0.9rem; margin: 0;">Critical Risk</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: rgba(253, 126, 20, 0.1); border-left: 4px solid #fd7e14; padding: 1.5rem; border-radius: 8px;">
+                                    <span class="badge" style="background: #fd7e14; color: white; font-size: 1.2rem; padding: 0.75rem 1rem; font-weight: 700;">ORANGE</span>
+                                    <p style="color: #e8f0f5; margin: 1rem 0 0.5rem 0; font-weight: 600;">{{ hazard_summary.orange }}</p>
+                                    <p style="color: #a0aab5; font-size: 0.9rem; margin: 0;">High Risk</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 1.5rem; border-radius: 8px;">
+                                    <span class="badge" style="background: #ffc107; color: black; font-size: 1.2rem; padding: 0.75rem 1rem; font-weight: 700;">YELLOW</span>
+                                    <p style="color: #e8f0f5; margin: 1rem 0 0.5rem 0; font-weight: 600;">{{ hazard_summary.yellow }}</p>
+                                    <p style="color: #a0aab5; font-size: 0.9rem; margin: 0;">Moderate Risk</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div style="background: rgba(40, 167, 69, 0.1); border-left: 4px solid #28a745; padding: 1.5rem; border-radius: 8px;">
+                                    <span class="badge" style="background: #28a745; color: white; font-size: 1.2rem; padding: 0.75rem 1rem; font-weight: 700;">GREEN</span>
+                                    <p style="color: #e8f0f5; margin: 1rem 0 0.5rem 0; font-weight: 600;">{{ hazard_summary.green }}</p>
+                                    <p style="color: #a0aab5; font-size: 0.9rem; margin: 0;">Low Risk</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Filtering -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Advanced Filtering</h5>
-                </div>
-                <div class="card-body filter-panel">
-                    <form method="get" class="advanced-filter-form">
-                        {{ filter_form.non_field_errors }}
-                        <div class="filter-grid">
-                            <div class="filter-field filter-field-wide">
-                                <label for="{{ filter_form.search.id_for_label }}">Search</label>
-                                {{ filter_form.search }}
-                                {% if filter_form.search.errors %}
-                                <div class="filter-errors">{{ filter_form.search.errors }}</div>
-                                {% endif %}
-                            </div>
-
-                            <fieldset class="filter-field filter-field-wide">
-                                <legend>Incident Type</legend>
-                                <div class="filter-checks">
-                                    {% for choice in filter_form.incident_type %}
-                                    <label class="filter-check">
-                                        {{ choice.tag }}
-                                        <span>{{ choice.choice_label }}</span>
-                                    </label>
-                                    {% endfor %}
+        <!-- Filtering -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card" style="border: 2px solid #00bcd4;">
+                    <div class="card-header" style="background: #252d3d; border-bottom: 2px solid #00bcd4; padding: 1.5rem;">
+                        <h5 style="color: #00bcd4; font-weight: 700; margin-bottom: 0;"><i class="fas fa-filter"></i> Advanced Filtering</h5>
+                    </div>
+                    <div class="card-body filter-panel">
+                        <form method="get" class="advanced-filter-form">
+                            {{ filter_form.non_field_errors }}
+                            <div class="filter-grid">
+                                <div class="filter-field filter-field-wide">
+                                    <label for="{{ filter_form.search.id_for_label }}">Search</label>
+                                    {{ filter_form.search }}
+                                    {% if filter_form.search.errors %}
+                                    <div class="filter-errors">{{ filter_form.search.errors }}</div>
+                                    {% endif %}
                                 </div>
-                                {% if filter_form.incident_type.errors %}
-                                <div class="filter-errors">{{ filter_form.incident_type.errors }}</div>
-                                {% endif %}
-                            </fieldset>
 
-                            <fieldset class="filter-field filter-field-wide">
-                                <legend>Status</legend>
-                                <div class="filter-checks">
-                                    {% for choice in filter_form.status %}
-                                    <label class="filter-check">
-                                        {{ choice.tag }}
-                                        <span>{{ choice.choice_label }}</span>
-                                    </label>
-                                    {% endfor %}
-                                </div>
-                                {% if filter_form.status.errors %}
-                                <div class="filter-errors">{{ filter_form.status.errors }}</div>
-                                {% endif %}
-                            </fieldset>
-
-                            <div class="filter-field">
-                                <label>Priority Range</label>
-                                <div class="filter-range">
-                                    <div>
-                                        {{ filter_form.priority_min }}
-                                        {% if filter_form.priority_min.errors %}
-                                        <div class="filter-errors">{{ filter_form.priority_min.errors }}</div>
-                                        {% endif %}
+                                <fieldset class="filter-field filter-field-wide">
+                                    <legend>Incident Type</legend>
+                                    <div class="filter-checks">
+                                        {% for choice in filter_form.incident_type %}
+                                        <label class="filter-check">
+                                            {{ choice.tag }}
+                                            <span>{{ choice.choice_label }}</span>
+                                        </label>
+                                        {% endfor %}
                                     </div>
-                                    <div>
-                                        {{ filter_form.priority_max }}
-                                        {% if filter_form.priority_max.errors %}
-                                        <div class="filter-errors">{{ filter_form.priority_max.errors }}</div>
-                                        {% endif %}
+                                    {% if filter_form.incident_type.errors %}
+                                    <div class="filter-errors">{{ filter_form.incident_type.errors }}</div>
+                                    {% endif %}
+                                </fieldset>
+
+                                <fieldset class="filter-field filter-field-wide">
+                                    <legend>Status</legend>
+                                    <div class="filter-checks">
+                                        {% for choice in filter_form.status %}
+                                        <label class="filter-check">
+                                            {{ choice.tag }}
+                                            <span>{{ choice.choice_label }}</span>
+                                        </label>
+                                        {% endfor %}
                                     </div>
+                                    {% if filter_form.status.errors %}
+                                    <div class="filter-errors">{{ filter_form.status.errors }}</div>
+                                    {% endif %}
+                                </fieldset>
+
+                                <div class="filter-field">
+                                    <label>Priority Range</label>
+                                    <div class="filter-range">
+                                        <div>
+                                            {{ filter_form.priority_min }}
+                                            {% if filter_form.priority_min.errors %}
+                                            <div class="filter-errors">{{ filter_form.priority_min.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            {{ filter_form.priority_max }}
+                                            {% if filter_form.priority_max.errors %}
+                                            <div class="filter-errors">{{ filter_form.priority_max.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="filter-field">
+                                    <label for="{{ filter_form.date_from.id_for_label }}">Date From</label>
+                                    {{ filter_form.date_from }}
+                                    {% if filter_form.date_from.errors %}
+                                    <div class="filter-errors">{{ filter_form.date_from.errors }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="filter-field">
+                                    <label for="{{ filter_form.date_to.id_for_label }}">Date To</label>
+                                    {{ filter_form.date_to }}
+                                    {% if filter_form.date_to.errors %}
+                                    <div class="filter-errors">{{ filter_form.date_to.errors }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
 
-                            <div class="filter-field">
-                                <label for="{{ filter_form.date_from.id_for_label }}">Date From</label>
-                                {{ filter_form.date_from }}
-                                {% if filter_form.date_from.errors %}
-                                <div class="filter-errors">{{ filter_form.date_from.errors }}</div>
-                                {% endif %}
-                            </div>
-
-                            <div class="filter-field">
-                                <label for="{{ filter_form.date_to.id_for_label }}">Date To</label>
-                                {{ filter_form.date_to }}
-                                {% if filter_form.date_to.errors %}
-                                <div class="filter-errors">{{ filter_form.date_to.errors }}</div>
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="filter-actions">
-                            <div class="filter-actions-group">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-filter"></i> Apply Filters
-                                </button>
-                                <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
-                                    <i class="fas fa-rotate-left"></i> Clear
+                            <div class="filter-actions">
+                                <div class="filter-actions-group">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-filter"></i> Apply Filters
+                                    </button>
+                                    <a href="{% url 'dashboard' %}" class="btn" style="background: transparent; border: 1px solid #00bcd4; color: #00bcd4;">
+                                        <i class="fas fa-redo"></i> Reset
+                                    </a>
+                                </div>
+                                {% if user.is_superuser or user.role == 'admin' or user.role == 'dispatcher' %}
+                                <a href="{% url 'incident_create' %}" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> New Incident
                                 </a>
+                                {% endif %}
                             </div>
-                            {% if user.is_superuser or user.role == 'admin' or user.role == 'dispatcher' %}
-                            <a href="{% url 'incident_create' %}" class="btn btn-success">
-                                <i class="fas fa-plus"></i> New Incident
-                            </a>
-                            {% endif %}
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Incidents Table -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Recent Incidents</h5>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Priority</th>
-                                <th>Location</th>
-                                <th>Reported By</th>
-                                <th>Date</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for incident in incidents %}
-                            <tr>
-                                <td><strong>{{ incident.title }}</strong></td>
-                                <td>{{ incident.get_incident_type_display }}</td>
-                                <td>
-                                    <span class="badge 
-                                        {% if incident.status == 'reported' %}badge-primary
-                                        {% elif incident.status == 'investigating' %}badge-warning
-                                        {% elif incident.status == 'confirmed' %}badge-warning
-                                        {% else %}badge-success
-                                        {% endif %}">
-                                        {{ incident.get_status_display }}
-                                    </span>
-                                </td>
-                                <td>
-                                    {% for i in incident.priority|stringformat:"d" %}
-                                        <i class="fas fa-star" style="color: #ffc107;"></i>
-                                    {% endfor %}
-                                </td>
-                                <td>{{ incident.location_description|truncatewords:5 }}</td>
-                                <td>{{ incident.reported_by.username }}</td>
-                                <td>{{ incident.created_at|date:"M d, Y H:i" }}</td>
-                                <td>
-                                    {% if user.role != 'viewer' or incident.status == 'confirmed' %}
-                                    <a href="{% url 'incident_detail' incident.pk %}" class="btn btn-sm btn-info">View</a>
-                                    {% else %}
-                                    <span class="text-muted small">Read-only</span>
-                                    {% endif %}
-                                    {% if user.is_superuser or user.role == 'admin' or user.role == 'dispatcher' %}
-                                    <a href="{% url 'incident_update' incident.pk %}" class="btn btn-sm btn-warning">Edit</a>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <td colspan="8" class="text-center">No incidents found</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+        <!-- Incidents Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card" style="border: 2px solid #00bcd4;">
+                    <div class="card-header" style="background: #252d3d; border-bottom: 2px solid #00bcd4; padding: 1.5rem;">
+                        <h5 style="color: #00bcd4; font-weight: 700; margin-bottom: 0;"><i class="fas fa-list"></i> Recent Incidents</h5>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" style="margin-bottom: 0;">
+                            <thead>
+                                <tr style="background: #252d3d; border-bottom: 2px solid #00bcd4;">
+                                    <th style="color: #00bcd4; font-weight: 700;">Title</th>
+                                    <th style="color: #00bcd4; font-weight: 700;">Type</th>
+                                    <th style="color: #00bcd4; font-weight: 700;">Status</th>
+                                    <th style="color: #00bcd4; font-weight: 700;">Priority</th>
+                                    <th style="color: #00bcd4; font-weight: 700;">Location</th>
+                                    <th style="color: #00bcd4; font-weight: 700;">Reported By</th>
+                                    <th style="color: #00bcd4; font-weight: 700;">Date</th>
+                                    <th style="color: #00bcd4; font-weight: 700;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for incident in incidents %}
+                                <tr style="border-bottom: 1px solid #252d3d; transition: background 0.3s;" onmouseover="this.style.background='#252d3d'" onmouseout="this.style.background=''">
+                                    <td style="color: #e8f0f5; font-weight: 600;">{{ incident.title }}</td>
+                                    <td style="color: #a0aab5;">{{ incident.get_incident_type_display }}</td>
+                                    <td>
+                                        <span class="badge" style="background: {% if incident.status == 'reported' %}#00bcd4{% elif incident.status == 'investigating' %}#ffc107{% elif incident.status == 'confirmed' %}#ffc107{% else %}#28a745{% endif %}; color: {% if incident.status in 'reported' %}#000{% else %}white{% endif %}; font-weight: 600;">
+                                            {{ incident.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td style="color: #e8f0f5;">
+                                        {% for i in "12345" %}
+                                            {% if i|stringformat:"s"|add:"0" <= incident.priority %}
+                                                <i class="fas fa-star" style="color: #ffc107;"></i>
+                                            {% else %}
+                                                <i class="far fa-star" style="color: #a0aab5;"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td style="color: #a0aab5; font-size: 0.9rem;">{{ incident.location_description|truncatewords:4 }}</td>
+                                    <td style="color: #a0aab5;">{{ incident.reported_by.username }}</td>
+                                    <td style="color: #a0aab5;">{{ incident.created_at|date:"M d H:i" }}</td>
+                                    <td>
+                                        {% if user.role != 'viewer' or incident.status == 'confirmed' %}
+                                        <a href="{% url 'incident_detail' incident.pk %}" class="btn btn-sm" style="background: transparent; border: 1px solid #00bcd4; color: #00bcd4; padding: 0.25rem 0.75rem;">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                        {% else %}
+                                        <span style="color: #a0aab5; font-size: 0.85rem;">Read-only</span>
+                                        {% endif %}
+                                        {% if user.is_superuser or user.role == 'admin' or user.role == 'dispatcher' %}
+                                        <a href="{% url 'incident_update' incident.pk %}" class="btn btn-sm" style="background: transparent; border: 1px solid #ffc107; color: #ffc107; padding: 0.25rem 0.75rem;">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 2rem; color: #a0aab5;">
+                                        <i class="fas fa-inbox"></i> No incidents found
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</main>
 {% endblock %}

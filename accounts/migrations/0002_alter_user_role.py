@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='role',
-            field=models.CharField(choices=[('admin', 'Santa Fe Admin'), ('dispatcher', 'Dispatcher'), ('viewer', 'Public Viewer')], default='viewer', max_length=20),
+            field=models.CharField(choices=[('admin', 'Carigara Admin'), ('dispatcher', 'Dispatcher'), ('viewer', 'Public Viewer')], default='viewer', max_length=20),
         ),
     ]
